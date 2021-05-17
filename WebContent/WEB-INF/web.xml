@@ -1,0 +1,4 @@
+<web-app>
+	<resource-ref res-type="javax.sql.DataSource" res-auth="Container">
+		<description>DataSource resource reference</description>
+		<res-ref-name>jdbc/winezone</res-ref-name></resource-ref></web-app>
