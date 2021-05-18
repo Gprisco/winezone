@@ -1,5 +1,6 @@
-package db;
+package model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,8 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class WineModelDM extends Model implements ProductModel<WineBean, WinePrimaryKey> {
+public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 	private static final String TABLE = "wine";
+	private Connection conn;
+
+	public WineModelDM(Connection conn) {
+		this.conn = conn;
+	}
 
 	private static String wineQuery = "SELECT * FROM " + TABLE
 			+ " INNER JOIN winery ON winery.wineryId = wine.wineryId "
@@ -22,13 +28,15 @@ public class WineModelDM extends Model implements ProductModel<WineBean, WinePri
 			+ "LEFT JOIN winegrape ON wine_winegrape.winegrapeId = winegrape.winegrapeId ";
 
 	@Override
-	public Collection<WineBean> findAll(int limit, int offset) {
+	public Collection<WineBean> findAll(int limit, int offset) throws SQLException {
+		PreparedStatement stmt = null;
+
 		Collection<WineBean> wines = new ArrayList<WineBean>();
 
 		try {
 			String sql = wineQuery + "LIMIT ?, ?";
 
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, limit);
 			stmt.setInt(2, offset);
 
@@ -38,16 +46,18 @@ public class WineModelDM extends Model implements ProductModel<WineBean, WinePri
 				WineBean wineBean = Helpers.createWineBean(rs);
 				wines.add(wineBean);
 			}
-		} catch (SQLException ex) {
-			// handle any errors
-			Helpers.handleSQLException(ex);
+		} finally {
+			if (stmt != null)
+				stmt.close();
 		}
 
 		return wines;
 	}
 
 	@Override
-	public WineBean findByPk(WinePrimaryKey pk) {
+	public WineBean findByPk(WinePrimaryKey pk) throws SQLException {
+		PreparedStatement stmt = null;
+
 		WineBean wine = null;
 
 		try {
@@ -56,7 +66,7 @@ public class WineModelDM extends Model implements ProductModel<WineBean, WinePri
 			// non ha l'uvaggio registrato
 			String sql = wineQuery + "WHERE wine.wine = ? AND wine.vintage = ?";
 
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, pk.getWine().toLowerCase());
 			stmt.setInt(2, pk.getVintage());
 
@@ -65,23 +75,25 @@ public class WineModelDM extends Model implements ProductModel<WineBean, WinePri
 			while (rs.next()) {
 				wine = Helpers.createWineBean(rs);
 			}
-		} catch (SQLException ex) {
-			// handle any errors
-			Helpers.handleSQLException(ex);
+		} finally {
+			if (stmt != null)
+				stmt.close();
 		}
 
 		return wine;
 	}
 
 	@Override
-	public void create(WineBean wine) {
+	public void create(WineBean wine) throws SQLException {
+		PreparedStatement stmt = null;
+
 		Integer insertedRows = null;
 
 		try {
 			String sql = "INSERT INTO " + TABLE + " (wine, vintage, availability, price, wineryId, winefamilyId) "
 					+ "VALUES (?, ?, ?, ?, ?, ?)";
 
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, wine.getPk().getWine());
 			stmt.setInt(2, wine.getPk().getVintage());
 			stmt.setInt(3, wine.getAvailability());
@@ -90,43 +102,47 @@ public class WineModelDM extends Model implements ProductModel<WineBean, WinePri
 			stmt.setInt(6, wine.getWinefamilyId());
 
 			insertedRows = stmt.executeUpdate();
-		} catch (SQLException ex) {
-			// handle any errors
-			Helpers.handleSQLException(ex);
+		} finally {
+			if (stmt != null)
+				stmt.close();
 		}
 
 		System.out.println(insertedRows);
 	}
 
 	@Override
-	public int destroy(WinePrimaryKey pk) {
+	public int destroy(WinePrimaryKey pk) throws SQLException {
+		PreparedStatement stmt = null;
+
 		Integer updatedRows = null;
 
 		try {
 			String sql = "DELETE FROM " + TABLE + " WHERE wine = ? AND vintage = ?";
 
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, pk.getWine());
 			stmt.setInt(2, pk.getVintage());
 
 			updatedRows = stmt.executeUpdate();
-		} catch (SQLException ex) {
-			// handle any errors
-			return Helpers.handleSQLException(ex);
+		} finally {
+			if (stmt != null)
+				stmt.close();
 		}
 
 		return updatedRows;
 	}
 
 	@Override
-	public int update(WineBean wine) {
+	public int update(WineBean wine) throws SQLException {
+		PreparedStatement stmt = null;
+
 		Integer updatedRows = null;
 
 		try {
 			String sql = "UPDATE " + TABLE + " SET " + "price = ?, " + "availability = ?, " + "wineryId = ?, "
 					+ "winefamilyId = ?, " + "WHERE wine = ? AND vintage = ?";
 
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setFloat(1, wine.getPrice());
 			stmt.setInt(2, wine.getAvailability());
 			stmt.setInt(3, wine.getWineryId());
@@ -135,9 +151,9 @@ public class WineModelDM extends Model implements ProductModel<WineBean, WinePri
 			stmt.setInt(6, wine.getPk().getVintage());
 
 			updatedRows = stmt.executeUpdate();
-		} catch (SQLException ex) {
-			// handle any errors
-			return Helpers.handleSQLException(ex);
+		} finally {
+			if (stmt != null)
+				stmt.close();
 		}
 
 		return updatedRows;

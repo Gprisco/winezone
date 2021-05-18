@@ -1,6 +1,6 @@
-package db;
+package model;
 
-public class WinePrimaryKey {
+public final class WinePrimaryKey {
 	private String wine;
 	private int vintage;
 

@@ -1,4 +1,4 @@
-package db;
+package model;
 
 public class WineryBean {
 	private Integer wineryId;

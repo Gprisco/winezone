@@ -1,8 +1,8 @@
-package db;
+package model;
 
-import db.Helpers.Winecolor;
-import db.Helpers.Winedenom;
-import db.Helpers.Winetype;
+import model.Helpers.Winecolor;
+import model.Helpers.Winedenom;
+import model.Helpers.Winetype;
 
 public class WinefamilyBean {
 	private Integer winefamilyId;

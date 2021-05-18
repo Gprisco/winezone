@@ -1,4 +1,4 @@
-package db;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,12 +11,12 @@ public class WineBean {
 	private Integer winefamilyId;
 	private WinefamilyBean winefamily;
 	private WineryBean winery;
-	private Collection<WineWinegrape> winegrapes;
+	private Collection<WineWinegrapeModelDM> winegrapes;
 
 	public WineBean() {
 		this.winefamily = null;
 		this.winery = null;
-		this.winegrapes = new ArrayList<WineWinegrape>();
+		this.winegrapes = new ArrayList<WineWinegrapeModelDM>();
 	}
 
 	public WinePrimaryKey getPk() {
@@ -75,11 +75,11 @@ public class WineBean {
 		this.winery = winery;
 	}
 
-	public Collection<WineWinegrape> getWinegrapes() {
+	public Collection<WineWinegrapeModelDM> getWinegrapes() {
 		return winegrapes;
 	}
 
-	public void setWinegrapes(Collection<WineWinegrape> winegrapes) {
+	public void setWinegrapes(Collection<WineWinegrapeModelDM> winegrapes) {
 		this.winegrapes = winegrapes;
 	}
 }

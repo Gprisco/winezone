@@ -1,14 +1,18 @@
-package HelloWorld;
+package controller;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import javax.naming.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
+
+import model.Helpers;
+import model.*;
 
 /**
  * Servlet implementation class HelloWorld
@@ -23,18 +27,25 @@ public class HelloWorld extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Context initCtx;
-		
-		try {
-			initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+		Connection conn = null;
 
-			DataSource ds = (DataSource) envCtx.lookup("jdbc/winezone");
-			
-			response.getWriter().append("Served at: ").append(request.getContextPath()).append(ds.toString());
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new ServletException(e);
+		try {
+			conn = ((DriverManagerConnectionPool) getServletContext().getAttribute("DriverManager")).getConnection();
+
+		} catch (SQLException e) {
+			Helpers.handleSQLException(e);
+		}
+
+		WineModelDM wineModel = new WineModelDM(conn);
+
+		try {
+			Collection<WineBean> wineBeans = wineModel.findAll(0, 10);
+			System.out.println("CIAO");
+			for (WineBean wine : wineBeans) {
+				System.out.println(wine.getPk().getWine());
+			}
+		} catch (SQLException ex) {
+			Helpers.handleSQLException(ex);
 		}
 	}
 }

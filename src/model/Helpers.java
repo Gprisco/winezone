@@ -1,4 +1,4 @@
-package db;
+package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -121,5 +121,20 @@ public class Helpers {
 		}
 
 		return winegrapeBean;
+	}
+
+	static WineWinegrapeBean createWineWinegrapeBean(ResultSet rs) {
+		WineWinegrapeBean wineWinegrapeBean = new WineWinegrapeBean();
+
+		try {
+			wineWinegrapeBean.setPercentage(rs.getInt("percentage"));
+			wineWinegrapeBean.setWine(createWineBean(rs));
+			wineWinegrapeBean.setWinegrape(createWinegrapeBean(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return wineWinegrapeBean;
+
 	}
 }
