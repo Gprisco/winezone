@@ -135,6 +135,19 @@ public class Helpers {
 		}
 
 		return wineWinegrapeBean;
+	}
 
+	static UserBean createUserBean(ResultSet rs) {
+		UserBean userBean = new UserBean();
+
+		try {
+			userBean.setId(rs.getInt("id"));
+			userBean.setEmail(rs.getString("email"));
+			userBean.setPassword(rs.getString("password"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return userBean;
 	}
 }

@@ -102,7 +102,7 @@ public class WinefamilyModelDM implements ProductModel<WinefamilyBean, Integer> 
 
 		try {
 			String sql = "UPDATE " + TABLE + " SET "
-					+ "winefamily = ?, winecolorId = ?, winetypeId = ?, winedenomId = ?, regionId = ?";
+					+ "winefamily = ?, winecolorId = ?, winetypeId = ?, winedenomId = ?, regionId = ? WHERE winefamilyId = ?";
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, winefamily.getWinefamily());
@@ -110,6 +110,7 @@ public class WinefamilyModelDM implements ProductModel<WinefamilyBean, Integer> 
 			stmt.setInt(3, winefamily.getWinetype().getValue());
 			stmt.setInt(4, winefamily.getWinedenom().getValue());
 			stmt.setInt(5, winefamily.getRegionId());
+			stmt.setInt(6, winefamily.getWinefamilyId());
 
 			updatedRows = stmt.executeUpdate();
 		} finally {
