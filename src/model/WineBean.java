@@ -11,12 +11,12 @@ public class WineBean {
 	private Integer winefamilyId;
 	private WinefamilyBean winefamily;
 	private WineryBean winery;
-	private Collection<WineWinegrapeModelDM> winegrapes;
+	private Collection<WineWinegrapeBean> winegrapes;
 
 	public WineBean() {
 		this.winefamily = null;
 		this.winery = null;
-		this.winegrapes = new ArrayList<WineWinegrapeModelDM>();
+		this.winegrapes = new ArrayList<WineWinegrapeBean>();
 	}
 
 	public WinePrimaryKey getPk() {
@@ -75,11 +75,15 @@ public class WineBean {
 		this.winery = winery;
 	}
 
-	public Collection<WineWinegrapeModelDM> getWinegrapes() {
+	public Collection<WineWinegrapeBean> getWinegrapes() {
 		return winegrapes;
 	}
 
-	public void setWinegrapes(Collection<WineWinegrapeModelDM> winegrapes) {
+	public void setWinegrapes(Collection<WineWinegrapeBean> winegrapes) {
 		this.winegrapes = winegrapes;
+	}
+
+	public void addWinegrape(WineWinegrapeBean winegrape) {
+		winegrapes.add(winegrape);
 	}
 }

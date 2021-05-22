@@ -1,4 +1,4 @@
-package controller;
+package controller.auth;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -37,9 +37,11 @@ public class Login extends HttpServlet {
 			Connection conn = ((DriverManagerConnectionPool) getServletContext().getAttribute("DriverManager"))
 					.getConnection();
 
-			checkLogin(conn, username, password);
+			UserBean user = checkLogin(conn, username, password);
 
 			request.getSession().setAttribute(UserRoles.REGISTERED, true);
+			request.getSession().setAttribute("username", user.getEmail());
+			request.getSession().setAttribute("userId", user.getId());
 
 			redirectedPage = Routes.APP_MAIN;
 		} catch (SQLException e) {
@@ -52,11 +54,12 @@ public class Login extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + redirectedPage);
 	}
 
-	private void checkLogin(Connection conn, String username, String password) throws Exception {
+	private UserBean checkLogin(Connection conn, String username, String password) throws Exception {
 		UserModelDM userModel = new UserModelDM(conn);
+		UserBean user = null;
 
 		try {
-			UserBean user = userModel.findOne(username);
+			user = userModel.findOne(username);
 
 			if (user == null)
 				throw new Exception("Invalid username or password");
@@ -68,5 +71,7 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 			throw new Exception("Internal Server Error");
 		}
+
+		return user;
 	}
 }

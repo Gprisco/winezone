@@ -61,7 +61,7 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 		WineBean wine = null;
 
 		try {
-			// Faccio un'intersezione con tutte le tabell tranne con winegrape con cui
+			// Faccio un'intersezione con tutte le tabelle tranne con winegrape con cui
 			// faccio un left join al fine di avere comunque tutti i dati del vino anche se
 			// non ha l'uvaggio registrato
 			String sql = wineQuery + "WHERE wine.wine = ? AND wine.vintage = ?";

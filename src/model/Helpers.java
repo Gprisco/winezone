@@ -69,6 +69,8 @@ public class Helpers {
 
 			wineBean.setWinery(createWineryBean(rs));
 			wineBean.setWinefamily(createWineFamilyBean(rs));
+
+			wineBean.addWinegrape(createWineWinegrapeBean(rs));
 		} catch (SQLException e) {
 			Helpers.handleSQLException(e);
 		}
@@ -128,7 +130,6 @@ public class Helpers {
 
 		try {
 			wineWinegrapeBean.setPercentage(rs.getInt("percentage"));
-			wineWinegrapeBean.setWine(createWineBean(rs));
 			wineWinegrapeBean.setWinegrape(createWinegrapeBean(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();

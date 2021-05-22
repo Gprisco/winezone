@@ -10,7 +10,7 @@ public final class WinePrimaryKey {
 	}
 
 	public String getWine() {
-		return wine;
+		return wine.substring(0, 1).toUpperCase() + wine.substring(1);
 	}
 
 	public int getVintage() {
