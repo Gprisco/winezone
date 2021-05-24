@@ -27,6 +27,29 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 			+ "LEFT JOIN wine_winegrape ON wine_winegrape.wine = wine.wine AND wine_winegrape.vintage = wine.vintage "
 			+ "LEFT JOIN winegrape ON wine_winegrape.winegrapeId = winegrape.winegrapeId ";
 
+	public int count() throws SQLException {
+		PreparedStatement stmt = null;
+
+		int wines = 0;
+
+		try {
+			String sql = "SELECT COUNT(*) FROM " + TABLE;
+
+			stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next())
+				wines = rs.getInt("COUNT(*)");
+		} finally {
+			if (stmt != null)
+				stmt.close();
+		}
+
+		return wines;
+
+	}
+
 	@Override
 	public Collection<WineBean> findAll(int limit, int offset) throws SQLException {
 		PreparedStatement stmt = null;
