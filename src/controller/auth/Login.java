@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import crypt.Crypt;
 import model.*;
@@ -39,9 +40,10 @@ public class Login extends HttpServlet {
 
 			UserBean user = checkLogin(conn, username, password);
 
-			request.getSession().setAttribute(UserRoles.REGISTERED, true);
-			request.getSession().setAttribute("username", user.getEmail());
-			request.getSession().setAttribute("userId", user.getId());
+			HttpSession session = request.getSession();
+			session.setAttribute(UserRoles.REGISTERED, true);
+			session.setAttribute("username", user.getEmail());
+			session.setAttribute("userId", user.getId());
 
 			redirectedPage = Routes.APP_MAIN;
 		} catch (SQLException e) {
