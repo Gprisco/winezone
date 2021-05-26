@@ -34,6 +34,8 @@ public class Catalogo extends HttpServlet {
 		Connection conn;
 		Integer page = null;
 
+		String query = request.getParameter("q");
+
 		try {
 			page = Integer.parseInt(request.getParameter("page"));
 		} catch (NumberFormatException e) {
@@ -41,6 +43,8 @@ public class Catalogo extends HttpServlet {
 
 			page = 0;
 		}
+
+		page = page >= 0 ? page : 0;
 
 		int limit = page * MAX_PAGE_LENGTH;
 		int offset = (page + 1) * MAX_PAGE_LENGTH;
@@ -50,8 +54,20 @@ public class Catalogo extends HttpServlet {
 
 			WineModelDM wineModel = new WineModelDM(conn);
 
-			Collection<WineBean> wines = wineModel.findAll(limit, offset);
-			int winesCount = wineModel.count();
+			Collection<WineBean> wines = null;
+			int winesCount = 0;
+
+			if (query != null && query.trim().length() > 0) {
+				winesCount = wineModel.countWineSearch(query);
+				wines = wineModel.searchForWines(query, limit, offset);
+
+				request.setAttribute("wineQueryQS", "&q=" + query);
+			} else {
+				winesCount = wineModel.count();
+				wines = wineModel.findAll(limit, offset);
+				
+				request.setAttribute("wineQueryQS", "");
+			}
 
 			int totalPages = (int) Math.ceil(winesCount / MAX_PAGE_LENGTH);
 
@@ -61,7 +77,7 @@ public class Catalogo extends HttpServlet {
 			request.setAttribute("previousPage", page - 1 < 0 ? 0 : page - 1);
 			request.setAttribute("currentPage", page);
 			request.setAttribute("nextPage", page + 1 > totalPages - 1 ? totalPages - 1 : page + 1);
-			request.setAttribute("totalPages", totalPages);
+			request.setAttribute("totalPages", totalPages > 0 ? totalPages : 1);
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(Routes.CATALOGO_JSP);
 			dispatcher.forward(request, response);

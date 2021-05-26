@@ -16,16 +16,19 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 		this.conn = conn;
 	}
 
-	private static String wineQuery = "SELECT * FROM " + TABLE
-			+ " INNER JOIN winery ON winery.wineryId = wine.wineryId "
-			+ "INNER JOIN winefamily ON winefamily.winefamilyId = wine.winefamilyId "
-			+ "INNER JOIN winecolor ON winecolor.winecolorId = winefamily.winecolorId "
-			+ "INNER JOIN winetype ON winetype.winetypeId = winefamily.winetypeId "
-			+ "INNER JOIN winedenom ON winedenom.winedenomId = winefamily.winedenomId "
-			+ "INNER JOIN region ON region.regionId = winefamily.regionId "
-			+ "INNER JOIN country ON region.countryId = country.countryId "
-			+ "LEFT JOIN wine_winegrape ON wine_winegrape.wine = wine.wine AND wine_winegrape.vintage = wine.vintage "
-			+ "LEFT JOIN winegrape ON wine_winegrape.winegrapeId = winegrape.winegrapeId ";
+	private static String wineQuery(String select) {
+		return "SELECT " + select + " FROM " + TABLE + " INNER JOIN winery ON winery.wineryId = wine.wineryId "
+				+ "INNER JOIN winefamily ON winefamily.winefamilyId = wine.winefamilyId "
+				+ "INNER JOIN winecolor ON winecolor.winecolorId = winefamily.winecolorId "
+				+ "INNER JOIN winetype ON winetype.winetypeId = winefamily.winetypeId "
+				+ "INNER JOIN winedenom ON winedenom.winedenomId = winefamily.winedenomId "
+				+ "INNER JOIN region ON region.regionId = winefamily.regionId "
+				+ "INNER JOIN country ON region.countryId = country.countryId "
+				+ "LEFT JOIN wine_winegrape ON wine_winegrape.wine = wine.wine AND wine_winegrape.vintage = wine.vintage "
+				+ "LEFT JOIN winegrape ON wine_winegrape.winegrapeId = winegrape.winegrapeId ";
+	}
+
+	private static String searchWineWhere = "WHERE wine.wine LIKE ? OR winefamily LIKE ? OR winery LIKE ? OR winecolor LIKE ? OR winetype = ? OR winegrape = ?";
 
 	public int count() throws SQLException {
 		PreparedStatement stmt = null;
@@ -47,7 +50,61 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 		}
 
 		return wines;
+	}
 
+	public int countWineSearch(String text) throws SQLException {
+		PreparedStatement stmt = null;
+
+		int wines = 0;
+
+		try {
+			String sql = wineQuery("COUNT(*)") + searchWineWhere;
+
+			stmt = conn.prepareStatement(sql);
+
+			for (int i = 1; i <= 6; i++)
+				stmt.setString(i, "%" + text + "%");
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next())
+				wines = rs.getInt("COUNT(*)");
+		} finally {
+			if (stmt != null)
+				stmt.close();
+		}
+
+		return wines;
+
+	}
+
+	public Collection<WineBean> searchForWines(String text, int limit, int offset) throws SQLException {
+		PreparedStatement stmt = null;
+
+		Collection<WineBean> wines = new ArrayList<WineBean>();
+
+		try {
+			String sql = wineQuery("*") + searchWineWhere + " LIMIT ?, ?";
+
+			stmt = conn.prepareStatement(sql);
+
+			for (int i = 1; i <= 6; i++)
+				stmt.setString(i, "%" + text + "%");
+			stmt.setInt(7, limit);
+			stmt.setInt(8, offset);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				WineBean wineBean = Helpers.createWineBean(rs);
+				wines.add(wineBean);
+			}
+		} finally {
+			if (stmt != null)
+				stmt.close();
+		}
+
+		return wines;
 	}
 
 	@Override
@@ -57,7 +114,7 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 		Collection<WineBean> wines = new ArrayList<WineBean>();
 
 		try {
-			String sql = wineQuery + "LIMIT ?, ?";
+			String sql = wineQuery("*") + "LIMIT ?, ?";
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, limit);
@@ -87,7 +144,7 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 			// Faccio un'intersezione con tutte le tabelle tranne con winegrape con cui
 			// faccio un left join al fine di avere comunque tutti i dati del vino anche se
 			// non ha l'uvaggio registrato
-			String sql = wineQuery + "WHERE wine.wine = ? AND wine.vintage = ?";
+			String sql = wineQuery("*") + "WHERE wine.wine = ? AND wine.vintage = ?";
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, pk.getWine().toLowerCase());

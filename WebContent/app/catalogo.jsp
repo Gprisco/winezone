@@ -6,6 +6,8 @@
 <%
 if (request.getAttribute("wines") == null)
 	response.sendRedirect(request.getContextPath() + Routes.APP_MAIN);
+
+String query = request.getParameter("q");
 %>
 
 <!DOCTYPE html>
@@ -24,7 +26,7 @@ if (request.getAttribute("wines") == null)
 
 	<div class="m-4">
 		<h1 class="h1">Catalogo</h1>
-		<h6 class="h6 text-muted">Sfoglia il nostro catalogo di migliaia
+		<h6 class="h6 text-muted">Sfoglia il nostro catalogo di centinaia
 			di vini</h6>
 	</div>
 
@@ -34,16 +36,27 @@ if (request.getAttribute("wines") == null)
 	<div class="container text-center w-50">
 		<div class="row justify-content-between">
 			<div class="col-12 mb-4">
-				<p class="lead text-center">
-					Ti stiamo mostrando <b>${ wines.size() }</b> vini dei <b>${ winesCount }</b>
-					totali
-				</p>
+				<form action="<%=Routes.BASE_URL + Routes.CATALOGO%>" method="get">
+					<input name="q" type="text" class="form-control" id="wineQuery"
+						placeholder="Vino | Azienda | Colore..."
+						value="<%=query != null ? query : ""%>">
+				</form>
 			</div>
 
+			<c:if test="<%=query != null && query.trim().length() > 0%>">
+				<div class="col-12 mb-4">
+					<p class="lead text-center">
+						Ti stiamo mostrando <b>${ wines.size() }</b> vini su <b>${winesCount}</b>
+					</p>
+				</div>
+
+			</c:if>
 			<div class="col">
-				<a
-					href="<%=response
-		.encodeUrl("/Winezone" + Routes.CATALOGO + "?page=" + (String) pageContext.getAttribute("previousPage"))%>">Precedente</a>
+				<c:if test="${currentPage > 0}">
+					<a
+						href="<%=response.encodeUrl("/Winezone" + Routes.CATALOGO + "?page="
+		+ (String) pageContext.getAttribute("previousPage") + (String) request.getAttribute("wineQueryQS"))%>">Precedente</a>
+				</c:if>
 			</div>
 
 			<div class="col">
@@ -53,8 +66,11 @@ if (request.getAttribute("wines") == null)
 			</div>
 
 			<div class="col">
-				<a
-					href="<%=response.encodeUrl("/Winezone" + Routes.CATALOGO + "?page=" + (String) pageContext.getAttribute("nextPage"))%>">Successiva</a>
+				<c:if test="${currentPage+1 < totalPages}">
+					<a
+						href="<%=response.encodeUrl("/Winezone" + Routes.CATALOGO + "?page=" + (String) pageContext.getAttribute("nextPage")
+		+ (String) request.getAttribute("wineQueryQS"))%>">Successiva</a>
+				</c:if>
 			</div>
 		</div>
 	</div>
