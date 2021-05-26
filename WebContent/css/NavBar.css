@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.navbar-ul {
+	display: flex;
+	flex-direction: row;
+}
+
+.navbar-ul>:last-child {
+	margin-left: auto;
+}

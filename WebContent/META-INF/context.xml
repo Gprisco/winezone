@@ -1,3 +1,0 @@
-<Context>
-	<Resource name="jdbc/winezone" auth="Container" type="javax.sql.DataSource" username="gestore_enoteca" password="Password-Molto-Sicura" driverClassName="com.mysql.cj.jdbc.Driver" url="jdbc:mysql://localhost:3306/winezone" maxActive="15" maxIdle="3"></Resource>
-</Context>
