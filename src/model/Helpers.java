@@ -151,4 +151,32 @@ public class Helpers {
 
 		return userBean;
 	}
+
+	static ShippingBean createShippingBean(ResultSet rs) {
+		ShippingBean shippingBean = new ShippingBean();
+
+		try {
+			shippingBean.setId(rs.getInt("id"));
+			shippingBean.setIdUser(rs.getInt("idUser"));
+			shippingBean.setAddress(rs.getString("address"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return shippingBean;
+	}
+
+	static ShippingWineBean createShippingWineBean(ResultSet rs) {
+		ShippingWineBean shippingWineBean = new ShippingWineBean();
+
+		try {
+			shippingWineBean.setIdShipping(rs.getInt("id"));
+			shippingWineBean.setVintage(rs.getInt("vintage"));
+			shippingWineBean.setWine(rs.getString("wine"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return shippingWineBean;
+	}
 }
