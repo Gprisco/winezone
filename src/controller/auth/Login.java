@@ -41,9 +41,12 @@ public class Login extends HttpServlet {
 			UserBean user = checkLogin(conn, username, password);
 
 			HttpSession session = request.getSession();
-			session.setAttribute(UserRoles.REGISTERED, true);
-			session.setAttribute("username", user.getEmail());
-			session.setAttribute("userId", user.getId());
+
+			synchronized (session) {
+				session.setAttribute(UserRoles.REGISTERED, true);
+				session.setAttribute("username", user.getEmail());
+				session.setAttribute("userId", user.getId());
+			}
 
 			redirectedPage = Routes.APP_MAIN;
 		} catch (SQLException e) {
