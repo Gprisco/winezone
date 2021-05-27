@@ -10,8 +10,7 @@
 String queryString = "?wine="
 		+ URLEncoder.encode((String) pageContext.getAttribute("wineParam"), StandardCharsets.UTF_8) + "&vintage="
 		+ URLEncoder.encode((String) pageContext.getAttribute("vintageParam"), StandardCharsets.UTF_8);
-String baseUrl = "/Winezone";
-String url = baseUrl + Routes.DETAILS + queryString;
+String url = Routes.BASE_URL + Routes.DETAILS + queryString;
 %>
 
 <div class="col-sm-12 col-md-6 col-lg-4 p-2 mx-auto">
@@ -23,7 +22,7 @@ String url = baseUrl + Routes.DETAILS + queryString;
 			<h5 class="card-title">${ param.wine }${" "}${ String.valueOf(param.vintage) }</h5>
 			<h6 class="card-subtitle mb-2 text-muted">${ param.winery }</h6>
 			<a href="<%=url%>" class="card-link">Dettagli</a> <a
-				href="<%=response.encodeUrl(baseUrl + Routes.ADD_TO_CART + queryString)%>"
+				href="<%=response.encodeUrl(Routes.BASE_URL + Routes.ADD_TO_CART + queryString)%>"
 				class="card-link">Acquista</a>
 		</div>
 	</div>

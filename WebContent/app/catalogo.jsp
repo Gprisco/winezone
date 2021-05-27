@@ -30,9 +30,6 @@ String query = request.getParameter("q");
 			di vini</h6>
 	</div>
 
-	<c:set var="previousPage" value="${String.valueOf(previousPage)}" />
-	<c:set var="nextPage" value="${String.valueOf(nextPage)}" />
-
 	<div class="container text-center w-50">
 		<div class="row justify-content-between">
 			<div class="col-12 mb-4">
@@ -49,29 +46,11 @@ String query = request.getParameter("q");
 						Ti stiamo mostrando <b>${ wines.size() }</b> vini su <b>${winesCount}</b>
 					</p>
 				</div>
-
 			</c:if>
-			<div class="col">
-				<c:if test="${currentPage > 0}">
-					<a
-						href="<%=response.encodeUrl("/Winezone" + Routes.CATALOGO + "?page="
-		+ (String) pageContext.getAttribute("previousPage") + (String) request.getAttribute("wineQueryQS"))%>">Precedente</a>
-				</c:if>
-			</div>
 
-			<div class="col">
-				<p>
-					Sei alla pagina <b>${ currentPage+1 }/${ totalPages }</b>
-				</p>
-			</div>
-
-			<div class="col">
-				<c:if test="${currentPage+1 < totalPages}">
-					<a
-						href="<%=response.encodeUrl("/Winezone" + Routes.CATALOGO + "?page=" + (String) pageContext.getAttribute("nextPage")
-		+ (String) request.getAttribute("wineQueryQS"))%>">Successiva</a>
-				</c:if>
-			</div>
+			<jsp:include page="./Components/Pagination.jsp" flush="true">
+				<jsp:param name="url" value="<%=Routes.CATALOGO%>" />
+			</jsp:include>
 		</div>
 	</div>
 

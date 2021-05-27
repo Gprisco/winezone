@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" import="routes.Routes"
+	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -22,6 +22,17 @@
 				<h1 class="h1">Ordini effettuati</h1>
 			</div>
 		</div>
+	</div>
+
+	<div class="container text-center w-50">
+		<div class="row justify-content-between">
+			<jsp:include page="../Components/Pagination.jsp" flush="true">
+				<jsp:param name="url" value="<%=Routes.SHIPPINGS%>" />
+			</jsp:include>
+		</div>
+	</div>
+
+	<div class="container">
 		<table class="table">
 			<thead>
 				<tr>
@@ -40,8 +51,17 @@
 						<td>${shipping.getIdUser() }</td>
 						<td>${shipping.getAddress() }</td>
 						<td>${shipping.getCreatedAt() }</td>
-						<td><a href="#" class="btn btn-sm btn-secondary">Dettagli</a></td>
-						<td><a href="#" class="btn btn-sm btn-danger">Elimina</a></td>
+
+						<c:set var="shippingId" value="${shipping.getId()}" />
+
+						<td><a
+							href="<%=response.encodeUrl(
+		Routes.BASE_URL + Routes.SHIPPING_DETAILS + "?id=" + String.valueOf(pageContext.getAttribute("shippingId")))%>"
+							class="btn btn-sm btn-secondary">Dettagli</a></td>
+						<td><a
+							href="<%=response.encodeUrl(
+		Routes.BASE_URL + Routes.DELETE_SHIPPING + "?id=" + String.valueOf(pageContext.getAttribute("shippingId")))%>"
+							class="btn btn-sm btn-danger">Elimina</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

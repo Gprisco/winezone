@@ -55,8 +55,17 @@ public class Shippings extends HttpServlet {
 			ShippingModelDM shippingModel = new ShippingModelDM(conn);
 
 			Collection<ShippingBean> shippings = shippingModel.findAll(limit, offset);
+			int shippingsCount = shippingModel.count();
 
+			int totalPages = (int) Math.ceil(shippingsCount / MAX_PAGE_LENGTH);
+
+			request.setAttribute("winesCount", shippingsCount);
 			request.setAttribute("shippings", shippings);
+
+			request.setAttribute("previousPage", page - 1 < 0 ? 0 : page - 1);
+			request.setAttribute("currentPage", page);
+			request.setAttribute("nextPage", page + 1 > totalPages - 1 ? totalPages - 1 : page + 1);
+			request.setAttribute("totalPages", totalPages > 0 ? totalPages : 1);
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(Routes.SHIPPINGS_JSP);
 			dispatcher.forward(request, response);
@@ -64,6 +73,5 @@ public class Shippings extends HttpServlet {
 			e.printStackTrace();
 			response.sendError(500);
 		}
-
 	}
 }

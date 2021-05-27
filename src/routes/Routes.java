@@ -32,5 +32,7 @@ public class Routes {
 	public static final String SHIPPINGS_JSP = "/app/admin/shippings.jsp";
 
 	public static final String SHIPPING_DETAILS = "/app/admin/shippingDetails";
-	public static final String SHIPPING_DETAILS_JSP = "/app/admin/shippingDetails";
+	public static final String SHIPPING_DETAILS_JSP = "/app/admin/shippingDetails.jsp";
+	
+	public static final String DELETE_SHIPPING = "/app/admin/deleteShipping";
 }

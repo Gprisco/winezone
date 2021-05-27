@@ -24,6 +24,29 @@ public class ShippingModelDM implements ProductModel<ShippingBean, Integer> {
 		return lastCreatedId;
 	}
 
+	public int count() throws SQLException {
+		int count = 0;
+		PreparedStatement stmt = null;
+
+		try {
+			String sql = "SELECT COUNT(*) FROM " + TABLE;
+
+			stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				count = rs.getInt("COUNT(*)");
+			}
+		} finally {
+			if (stmt != null)
+				stmt.close();
+		}
+
+		return count;
+
+	}
+
 	@Override
 	public ShippingBean findByPk(Integer pk) throws SQLException {
 		ShippingBean shippingBean = null;
