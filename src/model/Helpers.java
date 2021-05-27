@@ -69,8 +69,6 @@ public class Helpers {
 
 			wineBean.setWinery(createWineryBean(rs));
 			wineBean.setWinefamily(createWineFamilyBean(rs));
-
-			wineBean.addWinegrape(createWineWinegrapeBean(rs));
 		} catch (SQLException e) {
 			Helpers.handleSQLException(e);
 		}

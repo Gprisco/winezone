@@ -53,12 +53,14 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 	}
 
 	public int countWineSearch(String text) throws SQLException {
+		String count = "COUNT(CONCAT(wine.wine, wine.vintage))";
+		
 		PreparedStatement stmt = null;
 
 		int wines = 0;
 
 		try {
-			String sql = wineQuery("COUNT(*)") + searchWineWhere;
+			String sql = wineQuery(count) + searchWineWhere;
 
 			stmt = conn.prepareStatement(sql);
 
@@ -68,20 +70,19 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next())
-				wines = rs.getInt("COUNT(*)");
+				wines = rs.getInt(count);
 		} finally {
 			if (stmt != null)
 				stmt.close();
 		}
 
 		return wines;
-
 	}
 
 	public Collection<WineBean> searchForWines(String text, int limit, int offset) throws SQLException {
 		PreparedStatement stmt = null;
 
-		Collection<WineBean> wines = new ArrayList<WineBean>();
+		ArrayList<WineBean> wines = new ArrayList<WineBean>();
 
 		try {
 			String sql = wineQuery("*") + searchWineWhere + " LIMIT ?, ?";
@@ -97,7 +98,15 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 
 			while (rs.next()) {
 				WineBean wineBean = Helpers.createWineBean(rs);
-				wines.add(wineBean);
+
+				if (wines.contains(wineBean)) {
+					int indexOfExisting = wines.indexOf(wineBean);
+					WineBean existing = wines.get(indexOfExisting);
+					existing.addWinegrape(Helpers.createWineWinegrapeBean(rs));
+
+					wines.set(indexOfExisting, existing);
+				} else
+					wines.add(wineBean);
 			}
 		} finally {
 			if (stmt != null)
@@ -111,7 +120,7 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 	public Collection<WineBean> findAll(int limit, int offset) throws SQLException {
 		PreparedStatement stmt = null;
 
-		Collection<WineBean> wines = new ArrayList<WineBean>();
+		ArrayList<WineBean> wines = new ArrayList<WineBean>();
 
 		try {
 			String sql = wineQuery("*") + "LIMIT ?, ?";
@@ -124,7 +133,14 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 
 			while (rs.next()) {
 				WineBean wineBean = Helpers.createWineBean(rs);
-				wines.add(wineBean);
+				if (wines.contains(wineBean)) {
+					int indexOfExisting = wines.indexOf(wineBean);
+					WineBean existing = wines.get(indexOfExisting);
+					existing.addWinegrape(Helpers.createWineWinegrapeBean(rs));
+
+					wines.set(indexOfExisting, existing);
+				} else
+					wines.add(wineBean);
 			}
 		} finally {
 			if (stmt != null)
@@ -153,7 +169,8 @@ public class WineModelDM implements ProductModel<WineBean, WinePrimaryKey> {
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				wine = Helpers.createWineBean(rs);
+				wine = wine == null ? Helpers.createWineBean(rs) : wine;
+				wine.addWinegrape(Helpers.createWineWinegrapeBean(rs));
 			}
 		} finally {
 			if (stmt != null)
