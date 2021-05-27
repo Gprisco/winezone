@@ -2,12 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class ShippingBean {
 	private int id;
 	private int idUser;
 	private String address;
-	
+	private Date createdAt;
 	private Collection<ShippingWineBean> wines;
 
 	public ShippingBean() {
@@ -24,6 +25,10 @@ public class ShippingBean {
 
 	public String getAddress() {
 		return address;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
 	public Collection<ShippingWineBean> getWines() {
@@ -44,5 +49,31 @@ public class ShippingBean {
 
 	public void addWine(ShippingWineBean wine) {
 		this.wines.add(wine);
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		// If the object is compared with itself then return true
+		if (o == this) {
+			return true;
+		}
+
+		/*
+		 * Check if o is an instance of Complex or not "null instanceof [type]" also
+		 * returns false
+		 */
+		if (!(o instanceof ShippingBean)) {
+			return false;
+		}
+
+		// typecast o to Complex so that we can compare data members
+		ShippingBean s = (ShippingBean) o;
+
+		// Compare the data members and return accordingly
+		return this.getId() == s.getId();
 	}
 }

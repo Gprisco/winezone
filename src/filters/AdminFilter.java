@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.UserRoles;
 import routes.Routes;
 
-public class AuthFilter implements Filter {
+public class AdminFilter implements Filter {
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -22,11 +22,11 @@ public class AuthFilter implements Filter {
 		HttpServletRequest hrequest = (HttpServletRequest) request;
 		HttpServletResponse hresponse = (HttpServletResponse) response;
 
-		boolean isAuthorized = Helpers.isAuthorized(hrequest, hresponse, UserRoles.REGISTERED);
+		boolean isAuthorized = Helpers.isAuthorized(hrequest, hresponse, UserRoles.ADMIN);
 
 		if (isAuthorized)
 			chain.doFilter(hrequest, hresponse);
 		else
-			hresponse.sendRedirect(Routes.BASE_URL + Routes.LOGIN);
+			hresponse.sendRedirect(Routes.BASE_URL + Routes.APP_MAIN);
 	}
 }

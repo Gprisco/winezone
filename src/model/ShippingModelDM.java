@@ -5,11 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.ArrayList;
 
 public class ShippingModelDM implements ProductModel<ShippingBean, Integer> {
 	private static final String TABLE = "shipping";
-	private static final String leftJoin = "LEFT JOIN shipping_wine ON shipping_wine.idShipping = " + TABLE + ".id";
+	private static final String leftJoin = " LEFT JOIN shipping_wine ON shipping_wine.idShipping = " + TABLE + ".id";
 
 	private int lastCreatedId;
 
@@ -30,15 +31,17 @@ public class ShippingModelDM implements ProductModel<ShippingBean, Integer> {
 		PreparedStatement stmt = null;
 
 		try {
-			String sql = "SELECT * FROM " + TABLE + " WHERE id = ? " + leftJoin;
+			String sql = "SELECT * FROM " + TABLE + leftJoin + " WHERE shipping.id = ? ";
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, pk);
 
 			ResultSet rs = stmt.executeQuery();
 
-			while (rs.next())
-				shippingBean = Helpers.createShippingBean(rs);
+			while (rs.next()) {
+				shippingBean = shippingBean == null ? Helpers.createShippingBean(rs) : shippingBean;
+				shippingBean.addWine(Helpers.createShippingWineBean(rs));
+			}
 		} finally {
 			if (stmt != null)
 				stmt.close();
@@ -49,12 +52,12 @@ public class ShippingModelDM implements ProductModel<ShippingBean, Integer> {
 
 	@Override
 	public Collection<ShippingBean> findAll(int limit, int offset) throws SQLException {
-		Collection<ShippingBean> shippingBeans = new ArrayList<ShippingBean>();
+		ArrayList<ShippingBean> shippingBeans = new ArrayList<ShippingBean>();
 
 		PreparedStatement stmt = null;
 
 		try {
-			String sql = "SELECT * FROM " + TABLE + " LIMIT ?, ? " + leftJoin;
+			String sql = "SELECT * FROM " + TABLE + leftJoin + " LIMIT ?, ? ";
 
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, limit);
@@ -62,8 +65,20 @@ public class ShippingModelDM implements ProductModel<ShippingBean, Integer> {
 
 			ResultSet rs = stmt.executeQuery();
 
-			while (rs.next())
-				shippingBeans.add(Helpers.createShippingBean(rs));
+			while (rs.next()) {
+				ShippingBean newShippingBean = Helpers.createShippingBean(rs);
+
+				if (shippingBeans.contains(newShippingBean)) {
+					int indexOfExisting = shippingBeans.indexOf(newShippingBean);
+
+					ShippingBean existing = shippingBeans.get(indexOfExisting);
+					existing.addWine(Helpers.createShippingWineBean(rs));
+
+					shippingBeans.set(indexOfExisting, existing);
+				} else {
+					shippingBeans.add(newShippingBean);
+				}
+			}
 		} finally {
 			if (stmt != null)
 				stmt.close();
@@ -79,11 +94,12 @@ public class ShippingModelDM implements ProductModel<ShippingBean, Integer> {
 		PreparedStatement stmt = null;
 
 		try {
-			String sql = "INSERT INTO " + TABLE + " (idUser, address) VALUES (?, ?)";
+			String sql = "INSERT INTO " + TABLE + " (idUser, address, createdAt) VALUES (?, ?, ?)";
 
 			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, product.getIdUser());
 			stmt.setString(2, product.getAddress());
+			stmt.setDate(3, new java.sql.Date((new Date()).getTime()));
 
 			insertedRows = stmt.executeUpdate();
 

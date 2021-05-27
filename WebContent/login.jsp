@@ -21,7 +21,7 @@
 
 			<div class="form-floating">
 				<input name="username" type="text" class="form-control"
-					id="floatingInput" placeholder="username"> <label
+					id="floatingInput" placeholder="username" autofocus> <label
 					for="floatingInput">Username</label>
 			</div>
 			<div class="form-floating">

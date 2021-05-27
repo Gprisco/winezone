@@ -46,6 +46,9 @@ public class Login extends HttpServlet {
 				session.setAttribute(UserRoles.REGISTERED, true);
 				session.setAttribute("username", user.getEmail());
 				session.setAttribute("userId", user.getId());
+
+				if (user.isAdmin())
+					session.setAttribute(UserRoles.ADMIN, true);
 			}
 
 			redirectedPage = Routes.APP_MAIN;

@@ -27,4 +27,10 @@ public class Routes {
 
 	public static final String PAYMENT = "/app/checkout/payment";
 	public static final String PAYMENT_JSP = "/app/checkout/payment.jsp";
+
+	public static final String SHIPPINGS = "/app/admin/shippings";
+	public static final String SHIPPINGS_JSP = "/app/admin/shippings.jsp";
+
+	public static final String SHIPPING_DETAILS = "/app/admin/shippingDetails";
+	public static final String SHIPPING_DETAILS_JSP = "/app/admin/shippingDetails";
 }

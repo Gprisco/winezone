@@ -6,6 +6,7 @@
 
 <%
 boolean isLoggedIn = session.getAttribute(UserRoles.REGISTERED) != null;
+boolean isAdmin = session.getAttribute(UserRoles.ADMIN) != null;
 %>
 
 <%
@@ -42,19 +43,29 @@ cart = cart == null ? new CartBean() : cart;
 						href="${page[1]}">${page[0]}</a></li>
 				</c:forEach>
 
+				<%
+				if (isAdmin) {
+				%>
+				<li class="nav-item"><a class="nav-link" aria-current="page"
+					href="<%=request.getContextPath() + Routes.SHIPPINGS%>">Admin</a></li>
+
+				<%
+				}
+				%>
+
 				<li class="nav-item d-flex flex-row"><a class="nav-item p-2"
 					href="<%="/Winezone" + Routes.CART%>"><i
 						class="fas fa-shopping-cart"><span class="p-1"><%=cart.getCount() > 0 ? cart.getCount() : ""%></span></i></a>
 
 					<%
 					if (isLoggedIn) {
-					%> <a class="nav-item my-auto" href="<%=Routes.BASE_URL + Routes.LOGOUT%>">Logout</a>
-					<%
-					} else {
-					%> <a class="nav-item my-auto" href="<%=Routes.BASE_URL + Routes.LOGIN%>">Login</a>
-					<%
-					}
-					%></li>
+					%> <a class="nav-item my-auto"
+					href="<%=Routes.BASE_URL + Routes.LOGOUT%>">Logout</a> <%
+ } else {
+ %> <a class="nav-item my-auto"
+					href="<%=Routes.BASE_URL + Routes.LOGIN%>">Login</a> <%
+ }
+ %></li>
 			</ul>
 		</div>
 	</div>

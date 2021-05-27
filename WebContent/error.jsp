@@ -19,7 +19,8 @@
 	%>
 	Error code:
 	<%=response.getStatus()%><br> Torna alla
-	<a href="<%=Routes.BASE_URL%>">Home Page</a> e riprova
+	<a href="<%=Routes.BASE_URL + Routes.APP_MAIN%>">Home Page</a> e
+	riprova
 	<%
 	}
 	%>

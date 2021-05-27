@@ -145,6 +145,7 @@ public class Helpers {
 			userBean.setId(rs.getInt("id"));
 			userBean.setEmail(rs.getString("email"));
 			userBean.setPassword(rs.getString("password"));
+			userBean.setAdmin(rs.getBoolean("isAdmin"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -159,6 +160,7 @@ public class Helpers {
 			shippingBean.setId(rs.getInt("id"));
 			shippingBean.setIdUser(rs.getInt("idUser"));
 			shippingBean.setAddress(rs.getString("address"));
+			shippingBean.setCreatedAt(rs.getDate("createdAt"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
