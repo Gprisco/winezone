@@ -36,7 +36,12 @@ String query = request.getParameter("q");
 				<form action="<%=Routes.BASE_URL + Routes.CATALOGO%>" method="get">
 					<input name="q" type="text" class="form-control" id="wineQuery"
 						placeholder="Vino | Azienda | Colore..."
-						value="<%=query != null ? query : ""%>">
+						value="<%=query != null ? query : ""%>" list="wineQueryOptions">
+
+					<datalist id="wineQueryOptions">
+						<option value="...">
+					</datalist>
+
 				</form>
 			</div>
 
@@ -68,8 +73,39 @@ String query = request.getParameter("q");
 	</div>
 
 	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
 		crossorigin="anonymous"></script>
+
+	<script>
+		function onWineSearchChange(text) {
+			$("#wineQueryOptions").html("<option value=\"...\">...</option>");
+
+			$.ajax({
+				dataType: 'json',
+				url: "<%=Routes.BASE_URL + Routes.WINE_AUTOCOMPLETE%>",
+				method: "GET",
+				data: { q: text }
+			})
+				.done((data) => {	
+					$("#wineQueryOptions").html("");
+					const options = [];
+
+					data.forEach(wine => {
+						console.log(wine);
+						
+						options.push($("<option></option>").val(wine.wine).text(wine.winery + ", " + wine.winetype + ", " + wine.winecolor));						
+					});
+					
+					$("#wineQueryOptions").append(options);
+				})
+				.fail((xhr, textStatus) => console.log(xhr, textStatus))
+				.always(() => console.log("done"));
+		}
+		
+		$("#wineQuery").on('input', () => onWineSearchChange($("#wineQuery").val()));
+	</script>
 </body>
 </html>

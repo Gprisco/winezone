@@ -13,6 +13,8 @@ public class Routes {
 	public static final String CATALOGO = "/app/catalogo";
 	public static final String CATALOGO_JSP = "/app/catalogo.jsp";
 
+	public static final String WINE_AUTOCOMPLETE = "/app/wineAutocomplete";
+
 	public static final String DETAILS = "/app/details";
 	public static final String DETAILS_JSP = "/app/details.jsp";
 
@@ -33,6 +35,6 @@ public class Routes {
 
 	public static final String SHIPPING_DETAILS = "/app/admin/shippingDetails";
 	public static final String SHIPPING_DETAILS_JSP = "/app/admin/shippingDetails.jsp";
-	
+
 	public static final String DELETE_SHIPPING = "/app/admin/deleteShipping";
 }
