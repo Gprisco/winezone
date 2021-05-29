@@ -11,36 +11,41 @@ if (request.getAttribute("wines") == null)
 <html>
 <head>
 <meta charset="UTF-8">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-	crossorigin="anonymous">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/style.css" rel="stylesheet">
 <title>Winezone</title>
 </head>
 <body>
 	<jsp:include page="./Components/NavBar.jsp" flush="true" />
 
-	<div class="m-4">
-		<h1 class="h1">Benvenuto su Winezone</h1>
-		<h6 class="h6 text-muted">Vini bianchi, rossi e rosati a casa
-			tua!</h6>
-	</div>
-
-	<div class="row m-4">
-		<div>
-			<h3 class="h3">Selezione del giorno</h3>
+	<div class="container my-4">
+		<div class="row">
+			<div class="col">
+				<h1 class="h1">Benvenuto su Winezone</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h6 class="h6 text-muted">Vini bianchi, rossi e rosati a casa
+					tua!</h6>
+			</div>
 		</div>
 
-		<c:forEach var="wine" items="${ wines }">
-			<jsp:include page="Components/WineCard.jsp">
-				<jsp:param name="winecolor"
-					value="${wine.getWinefamily().getWinecolor()}" />
-				<jsp:param name="wine" value="${wine.getPk().getWine()}" />
-				<jsp:param name="winery" value="${wine.getWinery().getWinery()}" />
-				<jsp:param name="vintage" value="${wine.getPk().getVintage()}" />
-			</jsp:include>
-		</c:forEach>
+		<div class="row my-4">
+			<div class="col-12">
+				<h3 class="h3">Selezione del giorno</h3>
+			</div>
+
+			<c:forEach var="wine" items="${ wines }">
+				<jsp:include page="Components/WineCard.jsp">
+					<jsp:param name="winecolor"
+						value="${wine.getWinefamily().getWinecolor()}" />
+					<jsp:param name="wine" value="${wine.getPk().getWine()}" />
+					<jsp:param name="winery" value="${wine.getWinery().getWinery()}" />
+					<jsp:param name="vintage" value="${wine.getPk().getVintage()}" />
+				</jsp:include>
+			</c:forEach>
+		</div>
 	</div>
 
 	<script

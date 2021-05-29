@@ -34,7 +34,7 @@ public class App extends HttpServlet {
 			conn = ((DriverManagerConnectionPool) getServletContext().getAttribute("DriverManager")).getConnection();
 			WineModelDM wineModel = new WineModelDM(conn);
 
-			Collection<WineBean> wineBeans = wineModel.findAll(0, 4);
+			Collection<WineBean> wineBeans = wineModel.findAll(0, 10);
 
 			request.setAttribute("wines", wineBeans.toArray());
 
