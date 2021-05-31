@@ -4,6 +4,12 @@ input {
 	caret-color: var(--bs-secondary);
 }
 
+img {
+	-webkit-transition: all 0.2s; /* for less modern browsers */
+        	transition: all 0.2s;
+}
+
 img:hover {
-	transform: scale(1.2);
+	transform: scale(1.1);
+	border-radius: 10px;
 }

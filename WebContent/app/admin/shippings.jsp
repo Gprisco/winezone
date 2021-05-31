@@ -55,7 +55,7 @@
 							href="<%=response.encodeUrl(
 		Routes.BASE_URL + Routes.SHIPPING_DETAILS + "?id=" + String.valueOf(pageContext.getAttribute("shippingId")))%>"
 							class="btn btn-sm btn-secondary">Dettagli</a></td>
-						<td><a
+						<td><a onclick="return handleConfirmation()"
 							href="<%=response.encodeUrl(
 		Routes.BASE_URL + Routes.DELETE_SHIPPING + "?id=" + String.valueOf(pageContext.getAttribute("shippingId")))%>"
 							class="btn btn-sm btn-danger">Elimina</a></td>
@@ -69,5 +69,12 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
 		crossorigin="anonymous"></script>
+	<script>
+		function handleConfirmation(e) {
+			const confirmation = confirm("Sei sicuro di voler eliminare l'ordine? L'azione è irreversibile");
+
+			return confirmation;
+		}
+	</script>
 </body>
 </html>
