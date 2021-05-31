@@ -66,6 +66,7 @@ String query = request.getParameter("q");
 				<jsp:param name="wine" value="${wine.getPk().getWine()}" />
 				<jsp:param name="winery" value="${wine.getWinery().getWinery()}" />
 				<jsp:param name="vintage" value="${wine.getPk().getVintage()}" />
+				<jsp:param name="price" value="${wine.getPrice()}" />
 			</jsp:include>
 		</c:forEach>
 	</div>

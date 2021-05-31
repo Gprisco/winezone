@@ -15,7 +15,8 @@ String url = Routes.BASE_URL + Routes.DETAILS + queryString;
 
 <div class="col-sm-12 col-md-6 col-lg-4 p-2 mx-auto">
 	<div class="card mx-auto" style="width: 18rem;">
-		<img src="/Winezone/public/images/wine.small.jpg" class="card-img-top"
+		<span class="wine__price">€ ${ param.price }</span> <img
+			src="/Winezone/public/images/wine.small.jpg" class="card-img-top"
 			alt="Wine image" />
 		<div class="card-body">
 			<i class="card-subtitle text-muted">${ param.winecolor }</i>

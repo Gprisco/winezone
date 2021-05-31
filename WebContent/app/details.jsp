@@ -1,6 +1,7 @@
 <%@ page language="java"
-	import="routes.Routes, model.WineBean, model.WineWinegrapeBean"
+	import="routes.Routes, model.WineBean, model.WineWinegrapeBean, java.net.URLEncoder, java.nio.charset.StandardCharsets"
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
 String winegrapes = "";
@@ -15,6 +16,16 @@ else {
 		winegrapes += wg.getWinegrape().getWinegrape() + " (" + String.valueOf(wg.getPercentage()) + "%) ";
 	}
 }
+%>
+
+<c:set var="wineParam" value="${wine.getPk().getWine()}" />
+<c:set var="vintageParam"
+	value="${String.valueOf(wine.getPk().getVintage())}" />
+
+<%
+String queryString = "?wine="
+		+ URLEncoder.encode((String) pageContext.getAttribute("wineParam"), StandardCharsets.UTF_8) + "&vintage="
+		+ URLEncoder.encode((String) pageContext.getAttribute("vintageParam"), StandardCharsets.UTF_8);
 %>
 
 <!DOCTYPE html>
@@ -65,6 +76,21 @@ else {
 					<jsp:param name="key" value="Uvaggio" />
 					<jsp:param name="value" value="<%=winegrapes%>" />
 				</jsp:include>
+
+				<hr />
+				<jsp:include page="Components/TableRow.jsp" flush="true">
+					<jsp:param name="key" value="Prezzo" />
+					<jsp:param name="value" value="€ ${wine.getPrice()}" />
+				</jsp:include>
+
+				<div class="row mt-4">
+					<div class="col-12">
+						<a
+							href="<%=response.encodeUrl(Routes.BASE_URL + Routes.ADD_TO_CART + queryString)%>"
+							class="btn btn-primary w-100">Aggiungi al carrello</a>
+					</div>
+
+				</div>
 			</div>
 		</div>
 	</div>

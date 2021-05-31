@@ -6,10 +6,30 @@ input {
 
 img {
 	-webkit-transition: all 0.2s; /* for less modern browsers */
-        	transition: all 0.2s;
+	transition: all 0.2s;
 }
 
 img:hover {
 	transform: scale(1.1);
 	border-radius: 10px;
+}
+
+.wine__price {
+	position: absolute;
+	top: -2%;
+	right: -5%;
+	left: auto;
+	bottom: auto;
+	padding: 5px;
+	font-size: 1.2rem;
+	background: var(--bs-dark);
+	border-radius: 50%;
+	color: var(--bs-light);
+	z-index: 1;
+	--webkit-transition: transform 0.2s;
+	transition: transform 0.2s;
+}
+
+.wine__price:hover {
+	transform: scale(1.1);
 }
