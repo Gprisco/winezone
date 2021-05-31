@@ -56,7 +56,7 @@ public class Login extends HttpServlet {
 			Helpers.handleSQLException(e);
 		} catch (Exception e) {
 			System.out.println("Invalid username or password");
-			redirectedPage = Routes.LOGIN;
+			redirectedPage = Routes.LOGIN + "?notValid=true";
 		}
 
 		response.sendRedirect(request.getContextPath() + redirectedPage);

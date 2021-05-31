@@ -2,16 +2,12 @@
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-	crossorigin="anonymous">
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
 <title>Checkout</title>
 </head>
 <body>
@@ -29,7 +25,8 @@
 	</div>
 
 	<div class="container">
-		<form action="<%=Routes.BASE_URL + Routes.PAYMENT%>" method="post">
+		<form id="checkout-form"
+			action="<%=Routes.BASE_URL + Routes.PAYMENT%>" method="post">
 			<div class="row mb-3">
 				<div class="col">
 					<label for="address" class="form-label">Indirizzo</label> <input
@@ -62,9 +59,53 @@
 	</div>
 
 	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
 		crossorigin="anonymous"></script>
+	<script src="../js/checkInputField.js"></script>
+	<script>
+		function validateCardNumber(cb) {
+			const cardNumberInputField = $("#cardNumber");
+			const cardNumber = cardNumberInputField.val();
+			checkInputField(cardNumber, cardNumberInputField, [cardNumber.trim().length == 16], cb);
+		}
+		
+		function validateAddress(cb) {
+			const addressInputField = $("#address");
+			const address = addressInputField.val();
+			checkInputField(address, addressInputField, [address.trim().length > 3], (err) => error = err ? err : error);
+		}
+		
+		function validateCvv(cb) {
+			const cvvInputField = $("#cvv")
+			const cvv = cvvInputField.val();
+			checkInputField(cvv, cvvInputField, [cvv.trim().length === 3], (err) => error = err ? err : error);
+		}
+	
+		function validateCheckoutForm() {
+			let error = false;
+			
+			// Set error to true if err, else leave its value as it is
+			const handleError = (err) => error = err ? err : error;
+	
+			validateCardNumber(handleError);
+			validateAddress(handleError);
+			validateCvv(handleError);
+			
+			return { error };
+		}
+	
+		$("#checkout-form").on("submit", (e) => {
+			if(validateCheckoutForm().error) e.preventDefault(); 
+		});
+		
+		$("#cardNumber").on("input", validateCardNumber);
+		$("#address").on("input", validateAddress);
+		$("#cvv").on("input", validateCvv);
+	</script>
+
 
 </body>
 </html>

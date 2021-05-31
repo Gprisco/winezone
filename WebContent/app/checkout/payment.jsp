@@ -2,23 +2,19 @@
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-	crossorigin="anonymous">
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="../../css/bootstrap.min.css" rel="stylesheet">
+<link href="../../css/style.css" rel="stylesheet">
 <title>Pagamento</title>
 </head>
 <body>
 	<jsp:include page="../Components/NavBar.jsp" flush="true" />
 
-	<div class="container h-100">
-		<div class="row h-75">
+	<div class="container h-100 mt-4">
+		<div class="row h-100 mt-4">
 			<div class="col my-auto">
 				<h4 class="h4 text-center">Grazie per averci scelto!</h4>
 				<h6 class="h6 text-center text-muted">Il tuo ordine arriverà

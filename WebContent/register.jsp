@@ -13,7 +13,8 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<form class="form-signin" action="Register" method="post">
+		<form id="signin-form" class="form-signin" action="Register"
+			method="post">
 			<h1 class="h3 mb-3 fw-normal text-center">Registrazione</h1>
 
 			<div class="form-floating">
@@ -26,6 +27,9 @@
 					id="floatingPassword" placeholder="Password"> <label
 					for="floatingPassword">Password</label>
 			</div>
+
+			<div class="alert alert-info">La password deve contenere almeno
+				8 caratteri</div>
 
 			<button class="w-100 btn btn-lg btn-primary" type="submit">Registrati</button>
 			<p class="mt-5 mb-3 text-muted text-center">
@@ -41,8 +45,27 @@
 	</div>
 
 	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
 		crossorigin="anonymous"></script>
+	<script src="./js/checkInputField.js"></script>
+	<script>
+		$("#signin-form").on("submit", (e) => {
+			const usernameInputField = $("#floatingInput");
+			const passwordInputField = $("#floatingPassword");
+	
+			let error = false;
+			const username = usernameInputField.val();
+			const password = passwordInputField.val();
+	
+			// Set error to true if err, else leave its value as it is
+			checkInputField(username, usernameInputField, [true], (err) => error = err ? err : error);
+			checkInputField(password, passwordInputField, [password.trim().length >= 8], (err) => error = err ? err : error);
+	
+			if (error) e.preventDefault();
+		});
+	</script>
 </body>
 </html>

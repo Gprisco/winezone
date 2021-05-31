@@ -13,19 +13,30 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<form class="form-signin" action="Login" method="post">
+		<form id="signin-form" class="form-signin needs-validation"
+			action="Login" method="post" novalidate>
 			<h1 class="h3 mb-3 fw-normal text-center">Login</h1>
 
 			<div class="form-floating">
-				<input name="username" type="text" class="form-control"
+				<input name="username" type="text"
+					class="form-control <%=request.getParameter("notValid") != null ? "is-invalid" : ""%>"
 					id="floatingInput" placeholder="username" autofocus> <label
 					for="floatingInput">Username</label>
 			</div>
 			<div class="form-floating">
-				<input name="password" type="password" class="form-control"
+				<input name="password" type="password"
+					class="form-control <%=request.getParameter("notValid") != null ? "is-invalid" : ""%>"
 					id="floatingPassword" placeholder="Password"> <label
 					for="floatingPassword">Password</label>
 			</div>
+
+			<%
+			if (request.getParameter("notValid") != null) {
+			%>
+			<div class="alert alert-danger">Username o password errati</div>
+			<%
+			}
+			%>
 
 			<button class="w-100 btn btn-lg btn-primary" type="submit">Entra</button>
 			<p class="mt-5 mb-3 text-muted text-center">
@@ -41,8 +52,27 @@
 	</div>
 
 	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
 		crossorigin="anonymous"></script>
+	<script src="./js/checkInputField.js"></script>
+	<script>
+		$("#signin-form").on("submit", (e) => {
+			const usernameInputField = $("#floatingInput");
+			const passwordInputField = $("#floatingPassword");
+	
+			let error = false;
+			const username = usernameInputField.val();
+			const password = passwordInputField.val();
+	
+			// Set error to true if err, else leave its value as it is
+			checkInputField(username, usernameInputField, [true], (err) => error = err ? err : error);
+			checkInputField(password, passwordInputField, [true], (err) => error = err ? err : error);
+	
+			if (error) e.preventDefault();
+		});
+	</script>
 </body>
 </html>
