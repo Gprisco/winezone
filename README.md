@@ -11,3 +11,6 @@ Some AJAX calls have been made to exchange information without triggering a full
 Some custom css has been written to build custom components.
 
 **Note**: the payment is not real, no real services (e.g. Stripe...) have been implemented.
+
+## Documentation
+The project has been fully documented (in italian) [here](docs.pdf).
