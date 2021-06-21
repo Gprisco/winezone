@@ -39,7 +39,7 @@ String queryString = "?wine="
 <body>
 	<jsp:include page="Components/NavBar.jsp" flush="true" />
 
-	<div class="container mt-4">
+	<div class="container my-4">
 		<div class="row">
 			<div class="col-md-12 col-lg-4">
 				<img class="img-fluid" src="/Winezone/public/images/wine.big.jpg"

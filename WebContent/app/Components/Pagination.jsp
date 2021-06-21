@@ -13,7 +13,7 @@ String wineQueryQS = (String) request.getAttribute("wineQueryQS");
 wineQueryQS = wineQueryQS == null ? "" : wineQueryQS;
 %>
 
-<div class="col">
+<div class="col-md-12 col-lg-4">
 	<c:if test="${currentPage > 0}">
 		<a
 			href="<%=response.encodeUrl(Routes.BASE_URL + (String) pageContext.getAttribute("url") + "?page="
@@ -21,13 +21,13 @@ wineQueryQS = wineQueryQS == null ? "" : wineQueryQS;
 	</c:if>
 </div>
 
-<div class="col">
+<div class="col-md-12 col-lg-4">
 	<p>
 		Sei alla pagina <b>${ currentPage+1 }/${ totalPages }</b>
 	</p>
 </div>
 
-<div class="col">
+<div class="col-md-12 col-lg-4">
 	<c:if test="${currentPage+1 < totalPages}">
 		<a
 			href="<%=response.encodeUrl(Routes.BASE_URL + (String) pageContext.getAttribute("url") + "?page="

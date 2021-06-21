@@ -13,10 +13,10 @@
 <body>
 	<jsp:include page="../Components/NavBar.jsp" flush="true" />
 
-	<div class="m-4 container">
+	<div class="my-4 container">
 		<div class="row">
-			<div class="col">
-				<h1 class="h1">Cassa</h1>
+			<div class="col mx-auto">
+				<h1 class="h1 text-center mx-auto">Cassa</h1>
 				<h6 class="h6 text-center text-muted">
 					Stai per pagare <b>€ ${totalPrice}</b> a Winezone
 				</h6>
@@ -105,7 +105,5 @@
 		$("#address").on("input", validateAddress);
 		$("#cvv").on("input", validateCvv);
 	</script>
-
-
 </body>
 </html>
